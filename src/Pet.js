@@ -6,18 +6,9 @@ const Pet = (props) => {
   let hero = "http://pets-images.dev-apis.com/pets/none.jpg";
   if (images.length) {
     hero = images.map(
-      (x) => x.full
-      //in x
-      // ? x.full
-      // : x.medium in x
-      // ? x.medium
-      // : x.small in x
-      // ? x.small
-      // : x.large in x
-      // ? x.large
-      // : null
+      (x) =>
+        x.full ?? x.medium ?? x.small ?? x.large ?? "./images/zeroFound.svg"
     );
-    console.log(hero);
   }
 
   return (

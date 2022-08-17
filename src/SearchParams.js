@@ -12,13 +12,22 @@ const SearchParams = () => {
   const [pets, setPets] = useState([]);
   const [breeds] = useBreedList(animal);
   const [theme, setTheme] = useContext(ThemeContext);
-
+  const [page, setPageCount] = useState(1);
+  function handlePageCount() {
+    setPageCount(page + 1);
+  }
   useEffect(() => {
     requestPets();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function requestPets() {
-    const res = await fetch(`http://localhost:3000/pets`);
+    const res = await fetch(`http://localhost:3000/pets`, {
+      method: "put",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        pageCount: page,
+      }),
+    });
     const json = await res.json();
     console.log(json);
     setPets(json.animals);
@@ -96,6 +105,7 @@ const SearchParams = () => {
         <button style={{ backgroundColor: theme }}>Submit</button>
       </form>
       <Results pets={pets} />
+      <button onClick={handlePageCount}>Next Page</button>
     </div>
   );
 };
